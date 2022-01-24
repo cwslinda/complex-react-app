@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 
-function HeaderLoggedOut() {
+function HeaderLoggedOut(props) {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const response = await Axios.post("http://localhost:8080/login", { username, password });
+      const response = await Axios.post("/login", { username, password });
       if (response.data) {
-        console.log(response.data);
+        localStorage.setItem("complexappToken", response.data.token);
+        localStorage.setItem("complexappUsername", response.data.username);
+        localStorage.setItem("complexappAvatar", response.data.avatar);
+        props.setLoggedIn(true);
       } else {
       }
     } catch (e) {
